@@ -105,7 +105,7 @@ spec:
     app: nginx
 EOF
 
-
+wget -q https://github.com/splunk/addonfactory-splunk_sa_cim/archive/refs/tags/v4.15.0.tar.gz -o cim.tar.gz
 curl -s https://api.github.com/repos/splunk/splunk-add-on-for-modinput-test/releases/latest | grep "Splunk_TA.*tar.gz" | grep -v search_head | grep -v indexer | grep -v forwarder | cut -d : -f 2,3 | tr -d \" | wget -qi - || true
 MODINPUT_PACKAGE=$(ls Splunk_TA*)
 
@@ -203,6 +203,7 @@ POD_NAME=$(kubectl get po -l app=nginx --no-headers -o custom-columns=":metadata
 
 kubectl cp $PACKAGE_NAME $POD_NAME:/usr/share/nginx/html
 kubectl cp $MODINPUT_PACKAGE $POD_NAME:/usr/share/nginx/html 
+kubectl cp cim.tar.gz $POD_NAME:/usr/share/nginx/html 
 
 cat <<EOF | kubectl apply -f -
 apiVersion: enterprise.splunk.com/v1
@@ -217,6 +218,7 @@ spec:
       apps_location:
         - "http://nginx/$PACKAGE_NAME"
         - "http://nginx/$MODINPUT_PACKAGE"
+        - "http://nginx/cim.tar.gz"
 EOF
 
 kubectl patch -n istio-system service istio-ingressgateway --patch '{"spec":{"ports":[{"name":"splunk-web","port":8000,"protocol":"TCP"}]}}'
