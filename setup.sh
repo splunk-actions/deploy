@@ -238,3 +238,4 @@ echo "::set-output name=hec_token::$hec_token"
 echo "::set-output name=pass4SymmKey::$pass4SymmKey"
 echo "::set-output name=idxc_secret::$idxc_secret"
 echo "::set-output name=shc_secret::$shc_secret"
+echo "SPLUNK_IP:"  $SPLUNK_IP
