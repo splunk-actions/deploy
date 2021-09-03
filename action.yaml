@@ -1,0 +1,49 @@
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+name: splunk-deployer
+description: "GitHub actions spinner for k3s cluster with splunk-operator which deploy splunk including app to be tested"
+branding:
+  icon: eye
+  color: red
+inputs:
+  package-name:
+    description: "(Required) package name with app to tests."
+    required: true
+outputs:
+  splunk_ip:
+      description: "Splunk local ip"
+      value: ${{ steps.splunk.outputs.ip}}
+  password:
+    description: "Admin password for Splunk"
+    value: ${{ steps.splunk.outputs.password }}
+  hec_token:
+    description: "Splunk HEC Token"
+    value: ${{ steps.splunk.outputs.hec_token}}
+  pass4SymmKey:
+      description: "Splunk pass4SymmKey"
+      value: ${{ steps.splunk.outputs.pass4SymmKey}}
+  idxc_secret:
+      description: "Splunk idxc_secret"
+      value: ${{ steps.main.outputs.idxc_secret}}
+  shc_secret:
+      description: "Splunk shc_secret"
+      value: ${{ steps.splunk.outputs.shc_secret}}
+runs:
+  using: composite
+  steps:
+    - id: splunk
+      shell: bash
+      run: ${{ github.action_path }}/setup.sh deploy
+      env:
+        PACKAGE_NAME: ${{ inputs.package-name }}

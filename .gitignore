@@ -1,0 +1,10 @@
+
+# Ignore everything
+*
+
+# But not these files...
+!LICENSE
+!README.md
+!.gitignore
+!setup.sh
+!*.yaml
