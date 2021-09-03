@@ -218,7 +218,6 @@ spec:
       apps_location:
         - "http://nginx/$PACKAGE_NAME"
         - "http://nginx/$MODINPUT_PACKAGE"
-        - "http://nginx/cim.tar.gz"
 EOF
 
 kubectl patch -n istio-system service istio-ingressgateway --patch '{"spec":{"ports":[{"name":"splunk-web","port":8000,"protocol":"TCP"}]}}'
