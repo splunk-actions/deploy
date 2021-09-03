@@ -227,6 +227,7 @@ kubectl patch -n istio-system service istio-ingressgateway --patch '{"spec":{"po
 kubectl wait --for=condition=Ready pods splunk-s1-standalone-0 --timeout=-30s
 
 SPLUNK_IP=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+export $(kubectl get secret splunk-default-secret -o go-template='{{range $k,$v := .data}}{{printf  "%s=" $k}}{{if not $v}}{{$v}}{{else}}{{$v | base64decode}}{{end}}{{" "}}{{end}}')
 
 echo "::set-output name=ip::$SPLUNK_IP"
 echo "::set-output name=password::$password"
