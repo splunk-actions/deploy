@@ -23,26 +23,26 @@ inputs:
 outputs:
   splunk_ip:
       description: "Splunk local ip"
-      value: ${{ steps.splunk.outputs.ip}}
+      value: ${{ steps.main.outputs.ip}}
   password:
     description: "Admin password for Splunk"
-    value: ${{ steps.splunk.outputs.password }}
+    value: ${{ steps.main.outputs.password }}
   hec_token:
     description: "Splunk HEC Token"
-    value: ${{ steps.splunk.outputs.hec_token}}
+    value: ${{ steps.main.outputs.hec_token}}
   pass4SymmKey:
       description: "Splunk pass4SymmKey"
-      value: ${{ steps.splunk.outputs.pass4SymmKey}}
+      value: ${{ steps.main.outputs.pass4SymmKey}}
   idxc_secret:
       description: "Splunk idxc_secret"
       value: ${{ steps.main.outputs.idxc_secret}}
   shc_secret:
       description: "Splunk shc_secret"
-      value: ${{ steps.splunk.outputs.shc_secret}}
+      value: ${{ steps.main.outputs.shc_secret}}
 runs:
   using: composite
   steps:
-    - id: splunk
+    - id: main
       shell: bash
       run: ${{ github.action_path }}/setup.sh deploy
       env:
